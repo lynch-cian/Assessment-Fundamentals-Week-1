@@ -8,11 +8,13 @@ basket = []
 
 
 def add_to_basket(item: dict) -> list:
+    """Adds shopping items to the basket."""
     basket.append(item)
     return basket
 
 
 def generate_receipt(basket: list) -> str:
+    """Generates a receipt of all items and their prices."""
     basket_output = ""
     total = 0.00
     if basket == []:
