@@ -14,24 +14,34 @@ Total inc VAT: £5.60"""
 
 
 def generate_invoice(receipt_string: str) -> str:
-    receipt_list = receipt_string.splitlines()
-    invoice_string = "VAT RECEIPT \n\n"
+    """Generates a VAT invoice given a receipt"""
+    receipt_list = receipt_string.splitlines(
+    )  # Splits the string into a list by each new line
+    invoice_string = "VAT RECEIPT\n\n"
     excluding_vat = 0.00
     total = 0.00
-    for item in receipt_list:
-        if item.find("Total") == -1:
-            price_index = (item.find("£") + 1)
-            name_index = item.find(" - ")
-            item_price = item[price_index:]
-            item_name = item[:name_index]
+    if "Total" not in receipt_list[0]:
+        for item in receipt_list:  # Finds the name and price of each item
 
-            total += float(item_price)
-            excluding_vat = (float(item_price) / 100) * 80
-            invoice_string += (item_name + " - £" +
-                               str(f"{excluding_vat: .2f}") + "\n")
-    invoice_string += (f"\nTotal: £{total:.2f}")
-    invoice_string += (f"\nTotal: £{total:.2f}")
-    invoice_string += (f"\nTotal: £{total:.2f}")
+            if item.find("Total") == -1:  # Checks to exclude the original total
+                price_index = (item.find("£") + 1)
+                name_index = item.find(" - ")
+                item_price = item[price_index:]
+                item_name = item[:name_index]
+
+                total += float(item_price)
+                excluding_vat = (float(item_price) / 100) * 80
+                # Fills a line with item name and total exl VAT
+                invoice_string += (f"{item_name} - £{excluding_vat:.2f}\n")
+        invoice_string += "\n"
+
+    # Maths for calculating VAT
+    total_excluding_vat = (float(total) / 100) * 80
+    vat = total - total_excluding_vat
+
+    invoice_string += (f"Total: £{total_excluding_vat:.2f}")
+    invoice_string += (f"\nVAT: £{vat:.2f}")
+    invoice_string += (f"\nTotal inc VAT: £{total:.2f}")
     return invoice_string
 
 
