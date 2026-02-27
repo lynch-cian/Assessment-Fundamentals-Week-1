@@ -2,16 +2,6 @@
 Note: Do not add ANY variables to the global scope. This WILL break the tests.
 """
 
-"""VAT RECEIPT
-
-Bread x 2 - £2.88
-Milk x 1 - £0.64
-Butter x 1 - £0.96
-
-Total: £4.48
-VAT: £1.12
-Total inc VAT: £5.60"""
-
 
 def generate_invoice(receipt_string: str) -> str:
     """Generates a VAT invoice given a receipt"""
@@ -24,7 +14,7 @@ def generate_invoice(receipt_string: str) -> str:
         for item in receipt_list:  # Finds the name and price of each item
 
             if item.find("Total") == -1:  # Checks to exclude the original total
-                price_index = (item.find("£") + 1)
+                price_index = item.find("£") + 1
                 name_index = item.find(" - ")
                 item_price = item[price_index:]
                 item_name = item[:name_index]
